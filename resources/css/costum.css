@@ -1,0 +1,37 @@
+.card:hover {
+    transform: scale(1.03);
+    transition: 0.3s ease;
+}
+
+.umkm-card {
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.umkm-card:hover {
+    transform: translateY(-5px);
+}
+
+.footer-blue {
+    background-color: #0069d9;
+    color: #fff;
+    padding: 40px 0;
+}
+
+.footer-blue a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.footer-blue .icon {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .footer-blue .row > div {
+        text-align: center !important;
+        margin-bottom: 20px;
+    }
+}
