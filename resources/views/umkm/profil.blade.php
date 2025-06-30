@@ -11,6 +11,20 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('info'))
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ session('info') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     @if(isset($umkm) && $umkm)
         <div class="card shadow-lg border-0 animate__animated animate__fadeIn rounded-4 overflow-hidden">
             <div class="row g-0">
@@ -32,12 +46,36 @@
                             <a href="{{ route('umkm.edit') }}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil-square"></i> Edit Profil
                             </a>
+
                             <a href="{{ route('umkm.saldo') }}" class="btn btn-outline-success">
                                 <i class="bi bi-wallet2"></i> Lihat Saldo
                             </a>
+
+                            <form action="{{ route('umkm.destroy') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus UMKM?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Hapus UMKM
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        {{-- 🔽 Tambahan: Informasi Pendanaan --}}
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5>Informasi Pendanaan</h5>
+                <p><strong>Dana Dibutuhkan:</strong> Rp {{ number_format($umkm->dana_dibutuhkan, 0, ',', '.') }}</p>
+                <p><strong>Dana Terkumpul:</strong> Rp {{ number_format($umkm->dana_terkumpul, 0, ',', '.') }}</p>
+
+                @if($umkm->dana_terkumpul >= $umkm->dana_dibutuhkan)
+                    <div class="alert alert-success">✅ Target Dana Tercapai</div>
+                @else
+                    <div class="alert alert-warning">💰 Masih membuka pendanaan</div>
+                @endif
             </div>
         </div>
 

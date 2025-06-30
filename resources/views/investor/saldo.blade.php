@@ -6,6 +6,19 @@
 <div class="container py-4">
     <h2 class="mb-4"><i class="bi bi-wallet2 me-2"></i>Dashboard Saldo</h2>
 
+    {{-- Tampilkan Pesan Sukses/Error --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @elseif(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row g-4">
         {{-- Card Ringkasan Saldo --}}
         <div class="col-md-6">
@@ -19,19 +32,26 @@
             </div>
         </div>
 
-        {{-- Card Top Up Saldo --}}
+        {{-- Card Top Up & Tarik Saldo --}}
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Top Up Saldo</h5>
-                    <form action="{{ route('investor.transaksi') }}" method="get">
-                        <div class="mb-3">
-                            <label for="donasi-amount" class="form-label">Nominal Donasi</label>
-                            <input type="number" class="form-control" id="donasi-amount" name="jumlah" placeholder="Masukkan nominal" min="10000">
-                        </div>
+                    <h5 class="card-title">Kelola Saldo</h5>
+                    <form action="{{ route('investor.topup') }}" method="POST" class="mb-3">
+                        @csrf
+                        <label for="topup-amount" class="form-label">Nominal Top Up</label>
+                        <input type="number" class="form-control mb-2" id="topup-amount" name="jumlah" placeholder="Masukkan nominal" min="10000">
                         <button type="submit" class="btn btn-primary w-100">Top Up</button>
                     </form>
-                    <div class="text-muted small mt-2">*Donasi akan diproses melalui halaman transaksi.</div>
+
+                    <form action="{{ route('investor.tarik') }}" method="POST" onsubmit="return confirm('Yakin ingin menarik saldo?')">
+                        @csrf
+                        <label for="tarik-amount" class="form-label">Nominal Tarik</label>
+                        <input type="number" class="form-control mb-2" id="tarik-amount" name="jumlah" placeholder="Masukkan nominal" min="10000" max="{{ $saldo }}">
+                        <button type="submit" class="btn btn-danger w-100">Tarik Saldo</button>
+                    </form>
+
+                    <div class="text-muted small mt-2">*Top Up dan Tarik Saldo akan langsung berdampak ke saldo utama Anda.</div>
                 </div>
             </div>
         </div>

@@ -5,49 +5,52 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Umkm;
+use App\Models\Transaksi;
 
 class UmkmController extends Controller
 {
-    // Menampilkan form pembuatan profil UMKM
+    // ✅ Cegah user yang sudah punya UMKM dari akses form
     public function create()
     {
+        if (auth()->user()->umkm) {
+            return redirect()->route('umkm.index')->with('error', 'Kamu sudah memiliki profil UMKM.');
+        }
+
         return view('umkm.create');
     }
 
-   
-     // Menyimpan data profil UMKM
     public function store(Request $request)
     {
+        if (Auth::user()->umkm) {
+            return redirect()->back()->with('error', 'Kamu sudah membuat UMKM. Tidak bisa membuat lebih dari satu.');
+        }
+
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'lokasi' => 'required|string|max:255',
-            'kontak' => 'required|string|max:255',
+            'dana_dibutuhkan' => 'required|numeric|min:1000',
             'foto' => 'nullable|image|max:2048',
         ]);
 
-        $data = $request->only(['nama', 'kategori', 'deskripsi', 'lokasi', 'kontak']);
-        $data['user_id'] = Auth::id();
+        $path = $request->file('foto')?->store('umkm-foto', 'public');
 
-        if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('umkm', 'public');
-        }
+        Umkm::create([
+            'user_id' => Auth::id(),
+            'nama' => $request->nama,
+            'deskripsi' => $request->deskripsi,
+            'dana_dibutuhkan' => $request->dana_dibutuhkan,
+            'foto' => $path,
+        ]);
 
-        Umkm::create($data);
-
-        return redirect()->route('umkm.profil')->with('success', 'Profil UMKM berhasil dibuat.');
+        return redirect()->route('umkm.profil')->with('success', 'UMKM berhasil dibuat!');
     }
 
-    // Menampilkan profil UMKM milik user login
     public function profil()
-{
-    $umkm = Auth::user()->umkm;
-    return view('umkm.profil', compact('umkm')); // WAJIB ada $umkm
-}
+    {
+        $umkm = Auth::user()->umkm;
+        return view('umkm.profil', compact('umkm'));
+    }
 
-
-    // Menampilkan form edit profil UMKM
     public function edit()
     {
         $umkm = Auth::user()->umkm;
@@ -59,55 +62,59 @@ class UmkmController extends Controller
         return view('umkm.edit', compact('umkm'));
     }
 
-    // Menyimpan update data UMKM
     public function update(Request $request)
-{
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'kategori' => 'required|string|max:255',
-        'deskripsi' => 'required|string',
-        'lokasi' => 'required|string|max:255',
-        'kontak' => 'required|string|max:255',
-        'foto' => 'nullable|image|max:2048',
-    ]);
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'lokasi' => 'required|string|max:255',
+            'kontak' => 'required|string|max:255',
+            'foto' => 'nullable|image|max:2048',
+        ]);
 
-    $umkm = Auth::user()->umkm;
+        $umkm = Auth::user()->umkm;
 
-    if (!$umkm) {
-        return redirect()->route('umkm.create');
+        if (!$umkm) {
+            return redirect()->route('umkm.create');
+        }
+
+        $umkm->nama = $request->nama;
+        $umkm->kategori = $request->kategori;
+        $umkm->deskripsi = $request->deskripsi;
+        $umkm->lokasi = $request->lokasi;
+        $umkm->kontak = $request->kontak;
+
+        if ($request->hasFile('foto')) {
+            $umkm->foto = $request->file('foto')->store('umkm', 'public');
+        }
+
+        $umkm->save();
+
+        return redirect()->route('umkm.profil')->with('success', 'Profil UMKM berhasil diperbarui.');
     }
 
-    // Update semua kolom
-    $umkm->nama = $request->nama;
-    $umkm->kategori = $request->kategori;
-    $umkm->deskripsi = $request->deskripsi;
-    $umkm->lokasi = $request->lokasi;
-    $umkm->kontak = $request->kontak;
+    public function destroy()
+    {
+        $umkm = Auth::user()->umkm;
 
-    if ($request->hasFile('foto')) {
-        $umkm->foto = $request->file('foto')->store('umkm', 'public');
+        if ($umkm) {
+            $umkm->delete();
+            return redirect()->route('umkm.create')->with('success', 'UMKM berhasil dihapus.');
+        }
+
+        return redirect()->route('umkm.profil')->with('error', 'UMKM tidak ditemukan.');
     }
 
-    $umkm->save();
-
-    return redirect()->route('umkm.profil')->with('success', 'Profil UMKM berhasil diperbarui.');
-}
-
-
-
-    // Menampilkan saldo user
     public function saldo()
     {
         $saldo = Auth::user()->saldo ?? 0;
         return view('umkm.saldo', compact('saldo'));
     }
-    
 
     public function index()
     {
-    $umkm = Auth::user()->umkm;
-    return view('umkm.index', compact('umkm'));
+        $umkm = Auth::user()->umkm;
+        return view('umkm.index', compact('umkm'));
     }
-
-   
 }

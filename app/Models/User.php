@@ -12,53 +12,36 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'saldo',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'saldo' => 'integer',
         ];
     }
 
-    /**
-     * Relasi ke tabel transaksi (jika user adalah investor).
-     */
+    // Relasi ke transaksi (investor)
     public function transaksis()
     {
         return $this->hasMany(Transaksi::class, 'user_id');
     }
 
-    /**
-     * Relasi ke UMKM yang dibuat oleh user.
-     */
-    public function umkms()
+    // Relasi ke UMKM (pelaku usaha)
+    public function umkm()
     {
-        return $this->hasMany(Umkm::class, 'user_id');
+        return $this->hasOne(Umkm::class, 'user_id');
     }
 }

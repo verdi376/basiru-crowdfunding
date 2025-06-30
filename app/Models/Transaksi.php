@@ -11,14 +11,21 @@ class Transaksi extends Model
 
     protected $fillable = [
         'user_id',
+        'umkm_id',
         'jenis',
         'jumlah',
         'status',
         'bukti',
-        'deskripsi'];
+        'deskripsi',
+    ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function umkm()
+    {
+        return $this->belongsTo(Umkm::class);
     }
 }
