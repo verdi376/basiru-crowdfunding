@@ -5,17 +5,21 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
-{public function up()
+{
+    /**
+     * Run the migrations.
+     */
+    public function up()
 {
     Schema::table('transaksis', function (Blueprint $table) {
-        $table->string('status')->default('pending')->after('jumlah');
+        $table->string('qr_path')->nullable()->after('deskripsi');
     });
 }
 
 public function down()
 {
     Schema::table('transaksis', function (Blueprint $table) {
-        $table->dropColumn('status');
+        $table->dropColumn('qr_path');
     });
 }
 

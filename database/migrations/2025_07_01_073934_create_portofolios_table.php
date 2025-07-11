@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaksis', function (Blueprint $table) {
+        Schema::create('portofolios', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('jenis', ['donasi', 'topup']);
-            $table->bigInteger('jumlah');
-            $table->string('status')->default('pending');
-            $table->string('bukti')->nullable();
-            $table->string('deskripsi')->nullable();
+            $table->string('nama_lengkap');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->string('no_telepon');
+            $table->text('alamat');
+            $table->string('pekerjaan');
+            $table->bigInteger('penghasilan'); // dalam rupiah
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaksis');
+        Schema::dropIfExists('portofolios');
     }
 };

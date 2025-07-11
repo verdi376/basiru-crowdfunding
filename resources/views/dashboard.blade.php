@@ -48,7 +48,6 @@
 
                         <a href="{{ route('investor.transaksi', ['umkm_id' => $umkm->id]) }}" class="btn btn-primary rounded-pill mt-2"> Bantu Sekarang
                         </a>
-
                     </div>
                 </div>
             </div>

@@ -54,28 +54,40 @@
 
     {{-- Riwayat --}}
     <h5>Riwayat Transaksi</h5>
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-primary">
             <tr>
+                <th>No</th>
                 <th>Tanggal</th>
                 <th>Jenis</th>
                 <th>Jumlah</th>
+                <th>Sisa Saldo</th>
                 <th>Status</th>
-                <th>UMKM</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($transaksis as $transaksi)
+            @forelse ($transaksis as $i => $transaksi)
                 <tr>
+                    <td>{{ $i + 1 }}</td>
                     <td>{{ $transaksi->created_at->format('d-m-Y H:i') }}</td>
-                    <td>{{ ucfirst($transaksi->jenis) }}</td>
+                    <td>
+                      @if($transaksi->jenis === 'topup')
+                        Setor
+                      @elseif($transaksi->jenis === 'tarik')
+                        Tarik
+                      @elseif($transaksi->jenis === 'investasi')
+                        Investasi
+                      @else
+                        {{ ucfirst($transaksi->jenis) }}
+                      @endif
+                    </td>
                     <td>Rp {{ number_format($transaksi->jumlah, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($transaksi->sisa_saldo ?? 0, 0, ',', '.') }}</td>
                     <td>{{ ucfirst($transaksi->status) }}</td>
-                    <td>{{ $transaksi->umkm->nama ?? '-' }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5">Belum ada transaksi</td>
+                    <td colspan="6">Belum ada transaksi</td>
                 </tr>
             @endforelse
         </tbody>

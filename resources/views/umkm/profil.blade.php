@@ -68,6 +68,8 @@
         <div class="card mt-4">
             <div class="card-body">
                 <h5>Informasi Pendanaan</h5>
+                <p><strong>Durasi Investasi:</strong> {{ $umkm->durasi_investasi }} bulan</p>
+                <p><strong>Persentase Keuntungan Admin:</strong> {{ $umkm->persentase_admin }}%</p>
                 <p><strong>Dana Dibutuhkan:</strong> Rp {{ number_format($umkm->dana_dibutuhkan, 0, ',', '.') }}</p>
                 <p><strong>Dana Terkumpul:</strong> Rp {{ number_format($umkm->dana_terkumpul, 0, ',', '.') }}</p>
 

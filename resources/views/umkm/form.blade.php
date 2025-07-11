@@ -52,3 +52,9 @@
         </div>
     @endif
 </div>
+
+<div class="mb-3">
+    <label for="durasi_investasi" class="form-label">Durasi Investasi (bulan)</label>
+    <input type="number" min="1" max="60" class="form-control" id="durasi_investasi" name="durasi_investasi"
+           value="{{ old('durasi_investasi', $umkm->durasi_investasi ?? 10) }}" required>
+</div>

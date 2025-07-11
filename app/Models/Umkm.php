@@ -57,4 +57,31 @@ class Umkm extends Model
     {
         return $this->dana_terkumpul >= $this->dana_dibutuhkan;
     }
+
+    /**
+     * Relasi ke semua investor yang berinvestasi di UMKM ini
+     */
+    public function investors()
+    {
+        return $this->belongsToMany(User::class, 'transaksis', 'umkm_id', 'user_id')
+            ->where('jenis', 'investasi')
+            ->where('status', 'selesai')
+            ->distinct();
+    }
+
+    /**
+     * Relasi ke semua laporan penjualan yang berkaitan dengan UMKM ini
+     */
+    public function laporanPenjualan()
+    {
+        return $this->hasMany(\App\Models\LaporanPenjualan::class);
+    }
+
+    /**
+     * Relasi ke semua jadwal deviden yang berkaitan dengan UMKM ini
+     */
+    public function devidenSchedules()
+    {
+        return $this->hasMany(\App\Models\DevidenSchedule::class);
+    }
 }

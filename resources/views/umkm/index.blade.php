@@ -4,6 +4,8 @@
 
 @section('content')
 <div class="container py-5">
+
+    {{-- Pesan Sukses --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -11,15 +13,18 @@
         </div>
     @endif
 
-    @if(isset($umkm) && $umkm)
+    {{-- Jika user sudah punya profil UMKM --}}
+    @if($umkm)
         <div class="card shadow-lg border-0 animate__animated animate__fadeIn">
             <div class="row g-0">
-                @if(optional($umkm)->foto)
+                {{-- Foto UMKM --}}
+                @if($umkm->foto)
                     <div class="col-md-4 bg-light d-flex align-items-center justify-content-center p-4">
-                        <img src="{{ asset('storage/' . $umkm->foto) }}" alt="Foto UMKM" class="img-fluid rounded" style="max-height: 250px;">
+                        <img src="{{ asset('storage/' . $umkm->foto) }}" alt="Foto UMKM" class="img-fluid rounded shadow" style="max-height: 250px;">
                     </div>
                 @endif
 
+                {{-- Informasi UMKM --}}
                 <div class="col-md-8">
                     <div class="card-body">
                         <h2 class="card-title text-primary fw-bold">{{ $umkm->nama }}</h2>
@@ -28,6 +33,7 @@
                         <p class="mb-2"><i class="bi bi-telephone"></i> <strong>Kontak:</strong> {{ $umkm->kontak }}</p>
                         <p class="text-muted mt-3">{{ $umkm->deskripsi }}</p>
 
+                        {{-- Tombol Aksi --}}
                         <div class="d-flex gap-2 mt-4">
                             <a href="{{ route('umkm.edit') }}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil-square"></i> Edit Profil
@@ -41,6 +47,7 @@
             </div>
         </div>
 
+    {{-- Jika user belum membuat profil UMKM --}}
     @else
         <div class="text-center py-5 animate__animated animate__fadeInUp">
             <img src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" alt="Belum Ada UMKM" width="150" class="mb-4">
@@ -51,5 +58,6 @@
             </a>
         </div>
     @endif
+
 </div>
 @endsection

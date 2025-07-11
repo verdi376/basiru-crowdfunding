@@ -1,0 +1,27 @@
+/* Premium, modern, interactive style for laporan penjualan UMKM */
+.btn-gradient-primary {
+    background: linear-gradient(90deg, #4f8cff 0%, #6f6fff 100%);
+    color: #fff;
+    border: none;
+    transition: box-shadow 0.2s;
+}
+.btn-gradient-primary:hover {
+    box-shadow: 0 4px 16px rgba(79,140,255,0.2);
+    color: #fff;
+}
+.card {
+    border-radius: 1rem;
+}
+.badge-success {
+    background: linear-gradient(90deg, #4fd17a 0%, #38b6ff 100%);
+}
+.badge-warning {
+    background: linear-gradient(90deg, #ffe066 0%, #ffb347 100%);
+    color: #333;
+}
+.badge-danger {
+    background: linear-gradient(90deg, #ff6f6f 0%, #ffb347 100%);
+}
+.table-hover tbody tr:hover {
+    background: #f5faff;
+}
