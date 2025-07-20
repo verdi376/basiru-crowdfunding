@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Umkm;
 use App\Models\Transaksi;
+use App\Models\Investasi;
 
 class UmkmController extends Controller
 {
@@ -38,6 +39,23 @@ class UmkmController extends Controller
         }
 
         return view('umkm.create');
+    }
+
+    // ✅ Daftar UMKM dengan Total Investasi
+    public function daftarUmkm()
+    {
+        $umkms = Umkm::withCount(['transaksis as total_investor' => function($query) {
+                $query->where('jenis', 'investasi')
+                      ->where('status', 'diterima');
+            }])
+            ->withSum(['transaksis as total_investasi' => function($query) {
+                $query->where('jenis', 'investasi')
+                      ->where('status', 'diterima');
+            }], 'jumlah')
+            ->latest()
+            ->paginate(10); // Menambahkan pagination dengan 10 item per halaman
+
+        return view('umkm.daftar', compact('umkms'));
     }
 
     // ✅ Simpan Data UMKM Baru

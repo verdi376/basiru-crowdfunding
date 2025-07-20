@@ -33,9 +33,9 @@ class LaporanPenjualanController extends Controller
     public function download($id)
     {
         $laporan = LaporanPenjualan::findOrFail($id);
-        if (!Storage::exists($laporan->file_path)) {
+        if (!Storage::exists($laporan->file)) {
             return back()->with('error', 'File tidak ditemukan.');
         }
-        return Storage::download($laporan->file_path);
+        return Storage::download($laporan->file);
     }
 }

@@ -43,15 +43,15 @@
                         <p class="text-muted mt-3">{{ $umkm->deskripsi }}</p>
 
                         <div class="d-flex gap-3 mt-4">
-                            <a href="{{ route('umkm.edit') }}" class="btn btn-outline-primary">
+                            <a href="{{ route('umkm.edit', $umkm->id) }}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil-square"></i> Edit Profil
                             </a>
 
-                            <a href="{{ route('umkm.saldo') }}" class="btn btn-outline-success">
+                            <a href="{{ route('umkm.saldo', $umkm->id) }}" class="btn btn-outline-success">
                                 <i class="bi bi-wallet2"></i> Lihat Saldo
                             </a>
 
-                            <form action="{{ route('umkm.destroy') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus UMKM?');">
+                            <form action="{{ route('umkm.destroy', $umkm->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus UMKM?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-outline-danger">

@@ -9,7 +9,19 @@ class DevidenSchedule extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'umkm_id', 'jadwal_bagi', 'total_keuntungan', 'fee_admin', 'is_distributed'
+        'umkm_id', 
+        'jadwal_bagi', 
+        'total_keuntungan', 
+        'is_distributed',
+        'distributed_at',
+        'catatan'
+    ];
+    
+    protected $casts = [
+        'jadwal_bagi' => 'date',
+        'total_keuntungan' => 'decimal:2',
+        'is_distributed' => 'boolean',
+        'distributed_at' => 'datetime'
     ];
     public function umkm()
     {

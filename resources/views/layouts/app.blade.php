@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-100">
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'Basiru')</title>
@@ -10,9 +10,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            min-height: 100vh;
+            padding-bottom: 60px; /* Sesuaikan dengan tinggi footer */
+            position: relative;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            padding: 1rem 0;
+            z-index: 1000;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
     @yield('head')
 </head>
-<body class="bg-light">
+<body class="d-flex flex-column h-100 bg-light">
 
 {{-- Flash Messages --}}
 @if(session('success'))
@@ -58,6 +75,7 @@
                             <div class="d-flex align-items-center gap-2">
                                 <a href="{{ route('umkm.dashboard') }}" class="nav-link px-3 rounded-pill premium-umkm-link {{ request()->routeIs('umkm.dashboard') ? 'active text-white fw-bold' : 'text-white-50' }}">Home</a>
                                 <a href="{{ route('umkm.profil') }}" class="nav-link px-3 rounded-pill premium-umkm-link {{ request()->routeIs('umkm.profil') ? 'active text-white fw-bold' : 'text-white-50' }}">Profil UMKM</a>
+                                <a href="{{ route('umkm.laporan.index') }}" class="nav-link px-3 rounded-pill premium-umkm-link {{ request()->routeIs('umkm.laporan.*') ? 'active text-white fw-bold' : 'text-white-50' }}">Laporan Penjualan</a>
                                 <a href="{{ route('umkm.saldo') }}" class="nav-link px-3 rounded-pill premium-umkm-link {{ request()->routeIs('umkm.saldo') ? 'active text-white fw-bold' : 'text-white-50' }}">Saldo</a>
   
 
@@ -76,6 +94,40 @@
                                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="saldoTransaksiDropdown">
                                         <li><a class="dropdown-item" href="{{ route('investor.saldo') }}">Saldo</a></li>
                                         <li><a class="dropdown-item" href="{{ route('investor.transaksi') }}">Transaksi</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    @elseif (auth()->check() && auth()->user()->role === 'admin')
+                        <li class="nav-item ms-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="{{ route('admin.dashboard') }}" class="nav-link px-3 rounded-pill {{ request()->routeIs('admin.dashboard') ? 'active text-white fw-bold' : 'text-white-50' }}">Dashboard</a>
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link px-3 rounded-pill dropdown-toggle {{ (request()->routeIs('admin.umkm.*') || request()->routeIs('admin.investor.*')) ? 'active text-white fw-bold' : 'text-white-50' }}" href="#" id="dataMasterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Data Master
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dataMasterDropdown">
+                                        <li><a class="dropdown-item" href="{{ route('admin.umkm.index') }}">Data UMKM</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.investor.index') }}">Data Investor</a></li>
+                                    </ul>
+                                </div>
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link px-3 rounded-pill dropdown-toggle {{ request()->routeIs('admin.laporan.*') ? 'active text-white fw-bold' : 'text-white-50' }}" href="#" id="laporanDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Laporan
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="laporanDropdown">
+                                        <li><a class="dropdown-item" href="{{ route('admin.laporan.penjualan') }}">Laporan Penjualan</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.laporan.dividen') }}">Laporan Dividen</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.laporan.transaksi') }}">Laporan Transaksi</a></li>
+                                    </ul>
+                                </div>
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link px-3 rounded-pill dropdown-toggle {{ request()->routeIs('admin.pengaturan.*') ? 'active text-white fw-bold' : 'text-white-50' }}" href="#" id="pengaturanDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Pengaturan
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="pengaturanDropdown">
+                                        <li><a class="dropdown-item" href="{{ route('admin.pengaturan.umum') }}">Pengaturan Umum</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.pengaturan.pembayaran') }}">Metode Pembayaran</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -155,9 +207,11 @@
 </div>
 
 {{-- CONTENT --}}
-<div class="container mt-4" style="padding-top: 90px;">
-    @yield('content')
-</div>
+<main class="content-wrapper" style="padding-top: 90px;">
+    <div class="container mt-4">
+        @yield('content')
+    </div>
+</main>
 
 {{-- Bootstrap JS --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

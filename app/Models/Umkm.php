@@ -21,6 +21,12 @@ class Umkm extends Model
         'kontak',
         'foto',
         'dana_dibutuhkan', // ← dibutuhkan untuk target donasi
+        'status',
+        'catatan_penolakan',
+    ];
+
+    protected $casts = [
+        'status' => 'string',
     ];
 
     /**
@@ -83,5 +89,38 @@ class Umkm extends Model
     public function devidenSchedules()
     {
         return $this->hasMany(\App\Models\DevidenSchedule::class);
+    }
+    
+    /**
+     * Relasi ke semua pembayaran deviden UMKM ini
+     */
+    public function dividendPayments()
+    {
+        return $this->hasMany(\App\Models\DividendPayment::class);
+    }
+    
+    /**
+     * Relasi ke semua pengembalian modal UMKM ini
+     */
+    public function capitalReturns()
+    {
+        return $this->hasMany(\App\Models\CapitalReturn::class);
+    }
+    
+    /**
+     * Relasi ke semua investasi aktif di UMKM ini
+     */
+    public function activeInvestments()
+    {
+        return $this->hasMany(\App\Models\Investment::class)
+            ->where('status', 'active');
+    }
+    
+    /**
+     * Hitung total investasi aktif di UMKM ini
+     */
+    public function getTotalActiveInvestmentAttribute()
+    {
+        return $this->activeInvestments()->sum('amount');
     }
 }

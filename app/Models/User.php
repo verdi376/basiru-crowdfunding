@@ -48,16 +48,7 @@ class User extends Authenticatable
      */
     public function umkm()
     {
-        return $this->hasOne(\App\Models\Umkm::class);
-    }
-
-    /**
-     * Relasi ke profil investor (wajib diisi sebelum investasi)
-     */
-
-    public function portofolio()
-    {
-        return $this->hasOne(\App\Models\Portofolio::class);
+        return $this->hasOne(Umkm::class);
     }
 
     /**
@@ -75,5 +66,30 @@ class User extends Authenticatable
     {
         // Contoh: cek field wajib, sesuaikan dengan kebutuhan
         return $this->nama_lengkap && $this->alamat && $this->no_ktp;
+    }
+
+    /**
+     * Relasi ke pembayaran deviden yang diterima investor
+     */
+    public function dividendPayments()
+    {
+        return $this->hasMany(DividendPayment::class, 'investor_id');
+    }
+
+    /**
+     * Relasi ke pengembalian modal yang diterima investor
+     */
+    public function capitalReturns()
+    {
+        return $this->hasMany(CapitalReturn::class, 'investor_id');
+    }
+    
+    /**
+     * Relasi ke investasi aktif investor
+     */
+    public function investments()
+    {
+        return $this->hasMany(Investment::class, 'investor_id')
+            ->where('status', 'active');
     }
 }

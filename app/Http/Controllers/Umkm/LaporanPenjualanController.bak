@@ -19,13 +19,16 @@ class LaporanPenjualanController extends Controller
     public function index()
     {
         $umkm = Auth::user()->umkm;
+
         // Jika user belum punya profil UMKM, redirect dengan pesan error
         if (!$umkm) {
             return redirect()->route('umkm.profil')->with('error', 'Anda harus membuat profil UMKM terlebih dahulu.');
         }
+
         $laporans = LaporanPenjualan::where('umkm_id', $umkm->id)
                     ->latest()
                     ->paginate(10);
+
         return view('umkm.laporan.index', compact('laporans', 'umkm'));
     }
 
@@ -39,6 +42,7 @@ class LaporanPenjualanController extends Controller
         if (!$umkm) {
             return redirect()->route('umkm.profil')->with('error', 'Anda harus membuat profil UMKM terlebih dahulu.');
         }
+
         return view('umkm.laporan.create', compact('umkm'));
     }
 
@@ -60,6 +64,7 @@ class LaporanPenjualanController extends Controller
             ]);
 
             $umkm = Auth::user()->umkm;
+
             if (!$umkm) {
                 return redirect()->route('umkm.profil')
                     ->with('error', 'Anda harus membuat profil UMKM terlebih dahulu.');
@@ -85,14 +90,14 @@ class LaporanPenjualanController extends Controller
             $laporan->periode_awal = $validated['periode_awal'];
             $laporan->periode_akhir = $validated['periode_akhir'];
             $laporan->status = 'menunggu';
-
+            
             // Simpan ke database
             $laporan->save();
 
             return redirect()
                 ->route('umkm.laporan.index')
                 ->with('success', 'Laporan penjualan berhasil disimpan dan sedang menunggu verifikasi admin.');
-                    
+                
         } catch (\Exception $e) {
             // Hapus file yang sudah diupload jika terjadi error
             if (isset($filePath) && Storage::disk('public')->exists($filePath)) {

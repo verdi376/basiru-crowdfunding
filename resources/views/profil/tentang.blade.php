@@ -2,6 +2,25 @@
 
 @section('title', 'Tentang Basiru')
 
+@push('styles')
+<style>
+    body {
+        padding-bottom: 200px; /* Sesuaikan dengan tinggi footer */
+    }
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #0d6efd;
+        color: white;
+        padding: 1rem 0;
+        z-index: 1000;
+        border-top: 1px solid #dee2e6;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container my-5">
 
@@ -54,48 +73,44 @@
             </ul>
         </div>
     </div>
-</div>
 
-<footer class="bg-primary text-white py-4" style="width: 100vw; margin-left: calc(-50vw + 50%);">
-    <div class="container px-4">
-        <div class="row justify-content-center text-start">
-            
-            {{-- Kolom Alamat --}}
-            <div class="col-12 col-md-5 mb-4 mb-md-0">
-                <h6 class="fw-bold mb-2">
-                    <i class="bi bi-geo-alt-fill me-2"></i>Alamat:
-                </h6>
-                <p class="mb-0 small">
-                    <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Raya+Olat+Maras,+Moyo+Hulu,+Kab.+Sumbawa,+NTB+84371"
-                       target="_blank"
-                       class="text-white text-decoration-underline">
-                        Jl. Raya Olat Maras, Moyo Hulu, Kab. Sumbawa,<br>
-                        Nusa Tenggara Barat 84371
-                    </a>
-                </p>
+    {{-- Footer --}}
+    <footer class="footer">
+        <div class="container px-4">
+            <div class="row justify-content-center text-start">
+                <div class="col-12 col-md-5 mb-4 mb-md-0">
+                    <h6 class="fw-bold mb-2">
+                        <i class="bi bi-geo-alt-fill me-2"></i>Alamat:
+                    </h6>
+                    <p class="mb-0 small">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Raya+Olat+Maras,+Moyo+Hulu,+Kab.+Sumbawa,+NTB+84371"
+                           target="_blank"
+                           class="text-white text-decoration-underline">
+                            Jl. Raya Olat Maras, Moyo Hulu, Kab. Sumbawa,<br>
+                            Nusa Tenggara Barat 84371
+                        </a>
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-5 ms-md-5">
+                    <h6 class="fw-bold mb-2">
+                        <i class="bi bi-headset me-2"></i>Layanan Kontak:
+                    </h6>
+                    <p class="mb-1 small">
+                        <i class="bi bi-whatsapp me-2"></i>
+                        <a href="https://wa.me/6282182280191" target="_blank" class="text-white text-decoration-underline">
+                            0821-8228-0191
+                        </a>
+                    </p>
+                    <p class="mb-0 small">
+                        <i class="bi bi-envelope-fill me-2"></i>
+                        <a href="mailto:CostumerBasiru@gmail.com" class="text-white text-decoration-underline">
+                            CostumerBasiru@gmail.com
+                        </a>
+                    </p>
+                </div>
             </div>
-
-            {{-- Kolom Kontak (Digeser ke kanan) --}}
-            <div class="col-12 col-md-5 ms-md-5">
-                <h6 class="fw-bold mb-2">
-                    <i class="bi bi-headset me-2"></i>Layanan Kontak:
-                </h6>
-                <p class="mb-1 small">
-                    <i class="bi bi-whatsapp me-2"></i>
-                    <a href="https://wa.me/6282182280191" target="_blank" class="text-white text-decoration-underline">
-                        0821-8228-0191
-                    </a>
-                </p>
-                <p class="mb-0 small">
-                    <i class="bi bi-envelope-fill me-2"></i>
-                    <a href="mailto:CostumerBasiru@gmail.com" class="text-white text-decoration-underline">
-                        CostumerBasiru@gmail.com
-                    </a>
-                </p>
-            </div>
-
         </div>
-    </div>
-</footer>
-
+    </footer>
+</div>
 @endsection
